@@ -4,8 +4,24 @@ import Confetti from "react-confetti";
 
 import { letters } from "../assets/letters";
 import { playLetterSound } from "../assets/letterSounds";
+<<<<<<< HEAD
 const successSound = "/sounds/success.mp3";
 const errorSound = "/sounds/error.mp3";
+=======
+
+// ✅ التصحيح: الإشارة للملفات داخل public مباشرة بدون كلمة public
+const successSound = "/sounds/success.mp3";
+const errorSound = "/sounds/error.mp3";
+
+const totalLevels = letters.length;
+// ... باقي الكود كما هو
+
+import { letters } from "../assets/letters";
+import { playLetterSound } from "../assets/letterSounds";
+import successSound from "/public/sounds/success.mp3";
+import errorSound from "/public/sounds/error.mp3";
+
+>>>>>>> 7f1933b7873080f5d20ce5fdbbc42bc1d714d666
 const totalLevels = letters.length;
 
 export default function LetterSortingGame() {

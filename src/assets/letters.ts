@@ -1,36 +1,144 @@
 // src/assets/letters.ts
-// كائن يحتوي على روابط صور كل الحروف العربية (PNG)
-// يتم تحويل المسار إلى رابط صالح عبر import.meta.url
 
-const letters: { [key: string]: string } = {
-  "أ": new URL("./letters/أ-Alif.png", import.meta.url).href,
-  "ب": new URL("./letters/ب-Ba.png", import.meta.url).href,
-  "ت": new URL("./letters/ت-Taa.png", import.meta.url).href,
-  "ث": new URL("./letters/ث-Thaa.png", import.meta.url).href,
-  "ج": new URL("./letters/ج-Jim.png", import.meta.url).href,
-  "ح": new URL("./letters/ح-Haa.png", import.meta.url).href,
-  "خ": new URL("./letters/خ-Khaa.png", import.meta.url).href,
-  "د": new URL("./letters/د-Daal.png", import.meta.url).href,
-  "ذ": new URL("./letters/ذ-Dhaal.png", import.meta.url).href,
-  "ر": new URL("./letters/ر-Raa.png", import.meta.url).href,
-  "ز": new URL("./letters/ز-Zaa.png", import.meta.url).href,
-  "س": new URL("./letters/س-Seen.png", import.meta.url).href,
-  "ش": new URL("./letters/ش-Sheen.png", import.meta.url).href,
-  "ص": new URL("./letters/ص-Saad.png", import.meta.url).href,
-  "ض": new URL("./letters/ض-Ddaad.png", import.meta.url).href,
-  "ط": new URL("./letters/ط-Taaa.png", import.meta.url).href,
-  "ظ": new URL("./letters/ظ-Zaad.png", import.meta.url).href,
-  "ع": new URL("./letters/ع-Ain.png", import.meta.url).href,
-  "غ": new URL("./letters/غ-Ghain.png", import.meta.url).href,
-  "ف": new URL("./letters/ف-Fa.png", import.meta.url).href,
-  "ق": new URL("./letters/ق-Qaf.png", import.meta.url).href,
-  "ك": new URL("./letters/ك-Kaf.png", import.meta.url).href,
-  "ل": new URL("./letters/ل-Laam.png", import.meta.url).href,
-  "م": new URL("./letters/م-Meem.png", import.meta.url).href,
-  "ن": new URL("./letters/ن-Noon.png", import.meta.url).href,
-  "هـ": new URL("./letters/هـ-Haaa.png", import.meta.url).href,
-  "و": new URL("./letters/و-Waw.png", import.meta.url).href,
-  "ي": new URL("./letters/ي-Ya.png", import.meta.url).href,
-};
-
-export default letters;
+export const letters = [
+  {
+    id: 1,
+    name: "أ",
+    image: "/letters/أ-Alif.png",
+  },
+  {
+    id: 2,
+    name: "ب",
+    image: "/letters/ب-Ba.png",
+  },
+  {
+    id: 3,
+    name: "ت",
+    image: "/letters/ت-Taa.png",
+  },
+  {
+    id: 4,
+    name: "ث",
+    image: "/letters/ث-Thaa.png",
+  },
+  {
+    id: 5,
+    name: "ج",
+    image: "/letters/ج-Jim.png",
+  },
+  {
+    id: 6,
+    name: "ح",
+    image: "/letters/ح-Haa.png",
+  },
+  {
+    id: 7,
+    name: "خ",
+    image: "/letters/خ-Khaa.png",
+  },
+  {
+    id: 8,
+    name: "د",
+    image: "/letters/د-Daal.png",
+  },
+  {
+    id: 9,
+    name: "ذ",
+    image: "/letters/ذ-Dhaal.png",
+  },
+  {
+    id: 10,
+    name: "ر",
+    image: "/letters/ر-Raa.png",
+  },
+  {
+    id: 11,
+    name: "ز",
+    image: "/letters/ز-Zaa.png",
+  },
+  {
+    id: 12,
+    name: "س",
+    image: "/letters/س-Seen.png",
+  },
+  {
+    id: 13,
+    name: "ش",
+    image: "/letters/ش-Sheen.png",
+  },
+  {
+    id: 14,
+    name: "ص",
+    image: "/letters/ص-Saad.png",
+  },
+  {
+    id: 15,
+    name: "ض",
+    image: "/letters/ض-Ddaad.png",
+  },
+  {
+    id: 16,
+    name: "ط",
+    image: "/letters/ط-Taaa.png",
+  },
+  {
+    id: 17,
+    name: "ظ",
+    image: "/letters/ظ-Zaad.png",
+  },
+  {
+    id: 18,
+    name: "ع",
+    image: "/letters/ع-Ain.png",
+  },
+  {
+    id: 19,
+    name: "غ",
+    image: "/letters/غ-Ghain.png",
+  },
+  {
+    id: 20,
+    name: "ف",
+    image: "/letters/ف-Fa.png",
+  },
+  {
+    id: 21,
+    name: "ق",
+    image: "/letters/ق-Qaf.png",
+  },
+  {
+    id: 22,
+    name: "ك",
+    image: "/letters/ك-Kaf.png",
+  },
+  {
+    id: 23,
+    name: "ل",
+    image: "/letters/ل-Laam.png",
+  },
+  {
+    id: 24,
+    name: "م",
+    image: "/letters/م-Meem.png",
+  },
+  {
+    id: 25,
+    name: "ن",
+    image: "/letters/ن-Noon.png",
+  },
+  {
+    id: 26,
+    name: "هـ",
+    image: "/letters/هـ-Haaa.png",
+  },
+  {
+    id: 27,
+    name: "و",
+    image: "/letters/و-Waw.png",
+  },
+  {
+    id: 28,
+    name: "ي",
+    image: "/letters/ي-Ya.png",
+  },
+];
