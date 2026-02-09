@@ -4,6 +4,16 @@ import Confetti from "react-confetti";
 
 import { letters } from "../assets/letters";
 import { playLetterSound } from "../assets/letterSounds";
+
+// ✅ التصحيح: الإشارة للملفات داخل public مباشرة بدون كلمة public
+const successSound = "/sounds/success.mp3";
+const errorSound = "/sounds/error.mp3";
+
+const totalLevels = letters.length;
+// ... باقي الكود كما هو
+
+import { letters } from "../assets/letters";
+import { playLetterSound } from "../assets/letterSounds";
 import successSound from "/public/sounds/success.mp3";
 import errorSound from "/public/sounds/error.mp3";
 
