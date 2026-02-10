@@ -1,137 +1,135 @@
-// change test
 import React, { useState, useEffect } from "react";
 import Confetti from "react-confetti";
-
 import { letters } from "../assets/letters";
-import { playLetterSound } from "../assets/letterSounds";
-<<<<<<< HEAD
-const successSound = "/sounds/success.mp3";
-const errorSound = "/sounds/error.mp3";
-=======
 
-// ✅ التصحيح: الإشارة للملفات داخل public مباشرة بدون كلمة public
+// استدعاء الأصوات (تأكد من وجود الملفات في public/sounds)
 const successSound = "/sounds/success.mp3";
 const errorSound = "/sounds/error.mp3";
 
-const totalLevels = letters.length;
-// ... باقي الكود كما هو
-
-import { letters } from "../assets/letters";
-import { playLetterSound } from "../assets/letterSounds";
-import successSound from "/public/sounds/success.mp3";
-import errorSound from "/public/sounds/error.mp3";
-
->>>>>>> 7f1933b7873080f5d20ce5fdbbc42bc1d714d666
-const totalLevels = letters.length;
+// دالة مساعدة لتشغيل الصوت
+const playAudio = (path: string) => {
+  const audio = new Audio(path);
+  audio.play().catch((e) => console.error("Audio play failed", e));
+};
 
 export default function LetterSortingGame() {
-  const [level, setLevel] = useState(0);
-  const [target, setTarget] = useState(letters[0]);
-  const [completed, setCompleted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0); // رقم الحرف الحالي
+  const [options, setOptions] = useState<any[]>([]); // الخيارات الثلاثة
+  const [shake, setShake] = useState<number | null>(null); // لعمل اهتزاز عند الخطأ
+  const [isCompleted, setIsCompleted] = useState(false); // حالة الفوز
   const [showConfetti, setShowConfetti] = useState(false);
 
+  // الحرف المطلوب حالياً
+  const currentLetter = letters[currentIndex];
+
+  // 🔄 دالة تجهيز السؤال (تخلط الحرف الصحيح مع حرفين خطأ)
   useEffect(() => {
-    setTarget(letters[level]);
-  }, [level]);
+    if (!currentLetter) return;
 
-  const playSuccess = () => new Audio(successSound).play();
-  const playError = () => new Audio(errorSound).play();
+    // 1. نبدأ بالحرف الصحيح
+    let choices = [currentLetter];
 
-  function handleChoice(letter: any) {
-    if (letter.id === target.id) {
-      playLetterSound(letter.id);
-      playSuccess();
+    // 2. نضيف حرفين عشوائيين مختلفين
+    while (choices.length < 3) {
+      const random = letters[Math.floor(Math.random() * letters.length)];
+      // نتأكد أن الحرف العشوائي ليس هو الحرف الصحيح ولا مكرر
+      if (!choices.find((c) => c.id === random.id)) {
+        choices.push(random);
+      }
+    }
 
-      if (level + 1 === totalLevels) {
-        setCompleted(true);
+    // 3. نخلط أماكن البطاقات
+    choices = choices.sort(() => Math.random() - 0.5);
+    setOptions(choices);
+
+  }, [currentIndex]);
+
+  // 👆 دالة الضغط على البطاقة
+  const handleOptionClick = (selectedLetter: any) => {
+    if (selectedLetter.id === currentLetter.id) {
+      // ✅ إجابة صحيحة
+      playAudio(successSound);
+      
+      if (currentIndex + 1 === letters.length) {
+        // انتهت اللعبة
+        setIsCompleted(true);
         setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 6000);
       } else {
-        setLevel(level + 1);
+        // ننتقل للحرف التالي ببطء قليلاً ليستوعب الطفل
+        setTimeout(() => {
+          setCurrentIndex((prev) => prev + 1);
+        }, 800);
       }
     } else {
-      playError();
+      // ❌ إجابة خاطئة
+      playAudio(errorSound);
+      setShake(selectedLetter.id); // تفعيل الاهتزاز
+      setTimeout(() => setShake(null), 500); // إيقاف الاهتزاز
     }
+  };
+
+  // 🏆 واجهة الفوز
+  if (isCompleted) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-4">
+        {showConfetti && <Confetti />}
+        <h1 className="text-4xl font-bold text-green-600 mb-6 animate-bounce">
+          🎉 أحسنت يا بطل!
+        </h1>
+        <div className="text-9xl mb-6">🏆</div>
+        <p className="text-xl text-gray-700 mb-8">لقد أتممت جميع الحروف بنجاح!</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="bg-purple-600 text-white px-8 py-3 rounded-full text-xl shadow-lg hover:bg-purple-700 transition transform hover:scale-105"
+        >
+          🔄 العب مرة أخرى
+        </button>
+      </div>
+    );
   }
 
-  const progress = Math.round(((level + 1) / totalLevels) * 100);
-
+  // 🎮 واجهة اللعبة
   return (
-    <div className="p-6 text-center">
-      {showConfetti && <Confetti />}
-
-      <h1 className="text-2xl font-bold mb-4">
-        🧩 اختر الحرف الصحيح
-      </h1>
-
-      {/* Progress */}
-      <div className="w-full bg-gray-200 rounded-full h-6 mb-4">
+    <div className="max-w-4xl mx-auto p-4 flex flex-col items-center">
+      
+      {/* شريط التقدم */}
+      <div className="w-full max-w-md bg-gray-200 rounded-full h-4 mb-8 overflow-hidden shadow-inner">
         <div
-          className="bg-green-500 h-6 rounded-full transition-all"
-          style={{ width: `${progress}%` }}
-        />
+          className="bg-green-500 h-4 rounded-full transition-all duration-500 ease-out"
+          style={{ width: `${((currentIndex) / letters.length) * 100}%` }}
+        ></div>
       </div>
 
-      {!completed ? (
-        <>
-          {/* Target */}
-          <div className="mb-6">
-            <img
-              src={target.image}
-              alt={target.name}
-              className="w-32 h-32 mx-auto"
-            />
-            <p className="mt-2 text-xl font-bold">
-              أين حرف {target.name}؟
-            </p>
-          </div>
+      {/* السؤال */}
+      <div className="text-center mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+          أين حرف <span className="text-purple-600 inline-block transform hover:scale-110 transition">({currentLetter.name})</span> ؟
+        </h2>
+        <p className="text-gray-500">اضغط على الصورة الصحيحة</p>
+      </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-4 gap-4 max-w-md mx-auto">
-            {letters.map((letter) => (
-              <button
-                key={letter.id}
-                onClick={() => handleChoice(letter)}
-                className="bg-white rounded-xl shadow hover:scale-105 transition p-2"
-              >
-                <img
-                  src={letter.image}
-                  alt={letter.name}
-                  className="w-16 h-16 mx-auto"
-                />
-              </button>
-            ))}
-          </div>
-        </>
-      ) : (
-        <div className="mt-6">
-          <h2 className="text-2xl font-bold text-green-600 mb-4">
-            🎉 أكملت جميع الحروف!
-          </h2>
-
+      {/* بطاقات الخيارات */}
+      <div className="grid grid-cols-3 gap-4 md:gap-8 w-full max-w-2xl">
+        {options.map((option) => (
           <button
-            onClick={() => {
-              const name = prompt("✍️ اكتب اسم الطفل:");
-              if (!name) return;
-
-              const w = window.open("", "_blank");
-              w!.document.write(`
-                <h1 style="text-align:center">🏅 شهادة إنجاز</h1>
-                <h2 style="text-align:center">${name}</h2>
-                <p style="text-align:center">
-                أكمل لعبة كوكو وأصدقاء الحروف بنجاح
-                </p>
-                <script>window.print()</script>
-              `);
-              w!.document.close();
-            }}
-            className="px-6 py-3 bg-purple-500 text-white rounded-lg animate-bounce"
+            key={option.id}
+            onClick={() => handleOptionClick(option)}
+            className={`
+              relative group
+              bg-white rounded-3xl p-4 shadow-xl border-4 border-transparent
+              transition-all duration-200 transform hover:-translate-y-2 hover:shadow-2xl
+              ${shake === option.id ? "animate-shake border-red-400 bg-red-50" : "hover:border-purple-300"}
+              flex flex-col items-center justify-center aspect-square
+            `}
           >
-            🖨️ طباعة الشهادة
+            <img
+              src={option.image}
+              alt={option.name}
+              className="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300"
+            />
           </button>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }
-س
